@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -12,9 +13,18 @@ import (
 )
 
 func FirstHandler(w http.ResponseWriter, r *http.Request) {
-	data, err := os.ReadFile("../index.html")
+	wd, err := os.Getwd()
 	if err != nil {
-		http.Error(w, "Ошибка чтения файла", http.StatusInternalServerError)
+		http.Error(w, "Ошибка получения текущей дирректории", http.StatusInternalServerError)
+		return
+	}
+
+	fullPath := filepath.Join(wd, "..", "index.html")
+	data, err := os.ReadFile(fullPath)
+	if err != nil {
+		http.Error(w, "Ошибка чтения index.html", http.StatusInternalServerError)
+		// на случай, если ошибка чтения, хоть будем знать, где ищем
+		fmt.Println("Ищу файл по пути:", fullPath)
 		return
 	}
 
