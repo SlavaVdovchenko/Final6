@@ -19,7 +19,7 @@ func FirstHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fullPath := filepath.Join(wd, "..", "index.html")
+	fullPath := filepath.Join(wd, "index.html")
 	data, err := os.ReadFile(fullPath)
 	if err != nil {
 		http.Error(w, "Ошибка чтения index.html", http.StatusInternalServerError)
